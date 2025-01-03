@@ -1,0 +1,54 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Iffy",
+    "classifications": [
+        "Telegram",
+        "Bot"
+    ],
+    "name": "Telegram bot",
+    "description": "Create a Telegram bot project that uses a custom middleware pipeline (similar to what ASP.NET has), a resource manager, application host and DI.",
+    "identity": "Iffycat.TelegramBotTemplate",
+    "shortName": "telegram-bot",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "sourceName": "TelegramBotTemplate",
+    "preferNameDirectory": true,
+    "postActions": [
+        {
+            "description": "Initialize user secrets",
+            "manualInstructions": [
+                {
+                    "text": "Run 'dotnet user-secrets init'"
+                }
+            ],
+            "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+            "args": {
+                "executable": "dotnet",
+                "args": "user-secrets init",
+                "redirectStandardOutput": true,
+                "redirectStandardError": true
+            },
+            "continueOnError": true
+        },
+        {
+            "description": "Set Telegram bot token",
+            "actionId": "AC1156F7-BB77-4DB8-B28F-24EEBCCA1E5C",
+            "manualInstructions": [
+                {
+                    "text": "Set Telegram bot token in user secrets with the following command:"
+                }
+            ],
+            "args": {
+                "executable": "dotnet",
+                "args": "user-secrets set Telegram:BotToken <TOKEN>"
+            }
+        }
+    ],
+    "primaryOutputs": [
+        {
+            "path": "TelegramBotTemplate.csproj"
+        }
+    ]
+}
