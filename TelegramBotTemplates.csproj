@@ -8,7 +8,7 @@
     <Authors>1ffy</Authors>
     <Description>A modern, middleware-based framework for building Telegram bots in .NET.</Description>
     <PackageDescription>A modern, middleware-based framework for building Telegram bots in .NET.</PackageDescription>
-    <PackageTags>dotnet-new;templates;Telegram;Bot</PackageTags>
+    <PackageTags>dotnet-new;templates;telegram;bot; telegram-bot; middleware;</PackageTags>
     <RepositoryUrl>https://github.com/1ffycat/TelegramBotTemplates</RepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageReadmeFile>README.md</PackageReadmeFile>
