@@ -1,0 +1,31 @@
+name: Build and push package to GHPR
+
+on:
+    push:
+        branches:
+            - master
+        paths-ignore:
+            - '*.md'
+            - '.gitignore'
+            - '.github/workflows'
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v3
+              with:
+                  dotnet-version: 9.x
+            
+            - name: Log in to GitHub Packages Regstry
+              run: dotnet nuget add source -u 1ffycat -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/1ffycat/index.json"
+
+            - name: Nuget pack
+              run: dotnet pack -c Release
+
+            - name: Push the package to GHPR
+              run: dotnet nuget push **/*.nupkg --source github --skip-duplicate
