@@ -28,4 +28,4 @@ jobs:
               run: dotnet pack -c Release
 
             - name: Push the package to GHPR
-              run: dotnet nuget push **/*.nupkg --source github --skip-duplicate
+              run: dotnet nuget push **/*.nupkg --source github --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }}
