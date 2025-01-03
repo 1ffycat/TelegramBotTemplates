@@ -26,17 +26,21 @@ public class TextCommandExecuterMiddleware : IBotMiddleware
 
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<TextCommandExecuterMiddleware>>();
 
+        // Get all registered commands
         var commands = scope.ServiceProvider.GetServices<IChatCommand>().ToList();
 
         logger.LogDebug("Found {count} commands.", commands.Count);
 
+        // Build command context
         var cmdParser = scope.ServiceProvider.GetRequiredService<CommandParserService>();
         var ctx = cmdParser.BuildContext(context.Update.Message!);
 
+        // Find commands that match
         var matchingCommands = commands.Where(command => command.CanExecute(ctx)).ToList();
 
         logger.LogDebug("{count} commands match", matchingCommands.Count);
 
+        // Execute all matching commands
         foreach (var command in matchingCommands)
         {
             logger.LogDebug("Executing command: {name}", command.GetType().Name);
@@ -44,6 +48,7 @@ public class TextCommandExecuterMiddleware : IBotMiddleware
             logger.LogDebug("Done executing command {name}", command.GetType().Name);
         }
 
+        // Proceed execution
         await next(context);
     }
 }

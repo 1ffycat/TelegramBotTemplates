@@ -22,10 +22,12 @@ public class UpdateLoggerMiddleware : IBotMiddleware
 
         try
         {
+            // Proceed execution
             await next(context);
         }
         catch (Exception ex)
         {
+            // Log error
             logger.LogError(ex, "Error while processing update {@update}", context.Update);
             throw;
         }

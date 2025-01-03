@@ -19,10 +19,12 @@ public static class TelegramBotExtensions
     public static async Task TrySendMessageOrNotify(this ITelegramBotClient bot, User user, string text, Chat chat,
         CancellationToken cancellationToken = default)
     {
+        // Try sending message to DMs
         try
         {
             await bot.SendMessage(user.Id, text, cancellationToken: cancellationToken);
         }
+        // Or send message to the fallback chat
         catch
         {
             await bot.SendMessage(chat!.Id,

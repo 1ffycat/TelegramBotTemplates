@@ -17,11 +17,14 @@ public class RequestTimerMiddleware : IBotMiddleware
     {
         var logger = context.Services.GetRequiredService<ILogger<Program>>();
 
+        // Start the stopwatch
         var sw = new Stopwatch();
         sw.Start();
 
+        // Proceed execution
         await next(context);
 
+        // Log time taken
         sw.Stop();
         logger.LogDebug("Update processed in {time}", sw.Elapsed);
     }

@@ -22,12 +22,16 @@ public class HelpCommand(ILogger<HelpCommand> logger, Func<IEnumerable<IChatComm
         var helpBuilder =
             new StringBuilder();
 
+        // Iterate over all registered commands
         foreach (var command in commandFactory())
         {
+            // Check if the command has a BotCommand attribute
             var attr = command.GetType().GetCustomAttribute<BotCommandAttribute>();
 
+            // Skip otherwise
             if (attr is null) continue;
 
+            // Add line to the output
             helpBuilder.AppendLine(
                 $"{attr.Name}: {attr.Description} {(attr.Usage is not null ? $"({attr.Usage})" : "")}");
         }

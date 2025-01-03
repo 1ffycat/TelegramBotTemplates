@@ -31,13 +31,16 @@ public class ErrorHandlerMiddleware : IBotMiddleware
 
             var sb = new StringBuilder();
 
+            // Message header
             sb.Append(SystemStrings.ErrorHandling_UnexpectedError);
 
+            // Error details
             sb.Append(config.GetValue<bool>("ErrorHandling:SendTraces")
                     ? ex.ToString()
                     : $"{ex.GetType().Name}: {ex.Message}"
             );
 
+            // Send error message to the original chat
             await context.Client.SendMessage(context.Update.Message.Chat.Id, sb.ToString(),
                 cancellationToken: context.CancellationToken,
                 replyParameters: new ReplyParameters()

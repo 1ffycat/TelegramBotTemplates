@@ -40,6 +40,7 @@ public class BotMiddlewarePipeline(ILogger<BotMiddlewarePipeline> logger)
 
         BotMiddlewareDelegate pipeline = _ => Task.CompletedTask;
 
+        // Iterate over all registered middlewares in reverse and add them to the pipeline
         for (var i = _components.Count - 1; i >= 0; i--) pipeline = _components[i](pipeline);
 
         logger.LogInformation("Pipeline built with {middlewareCount} components. Starting with {@firstMiddleware}",
