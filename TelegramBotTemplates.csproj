@@ -11,6 +11,7 @@
     <PackageTags>dotnet-new;templates;Telegram;Bot</PackageTags>
     <RepositoryUrl>https://github.com/1ffycat/TelegramBotTemplates</RepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -20,6 +21,8 @@
   <ItemGroup>
     <Content Include="templates\**\*" Exclude="templates\**\bin\**;templates\**\obj\**" />
     <Compile Remove="**\*" />
+    <None Include="README.md" Pack="true" PackagePath="\"/>
+    <None Include="LICENSE" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
