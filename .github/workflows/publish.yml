@@ -29,3 +29,6 @@ jobs:
 
             - name: Push the package to GHPR
               run: dotnet nuget push **/*.nupkg --source github --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Push the package to nuget.org
+              run: dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key ${{ secrets.NUGET_TOKEN }}
