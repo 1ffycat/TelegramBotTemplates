@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageVersion>1.1.2</PackageVersion>
+    <PackageVersion>1.1.3</PackageVersion>
     <PackageId>1ffycat.TelegramBotTemplates</PackageId>
     <Title>Middleware-based Telegram bot templates</Title>
     <Authors>1ffy</Authors>
