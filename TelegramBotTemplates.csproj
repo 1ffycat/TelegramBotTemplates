@@ -4,7 +4,7 @@
     <PackageType>Template</PackageType>
     <PackageVersion>1.1.1</PackageVersion>
     <PackageId>1ffycat.TelegramBotTemplates</PackageId>
-    <Title>A modern, middleware-based framework for building Telegram bots in .NET.</Title>
+    <Title>Middleware-based Telegram bot templates</Title>
     <Authors>1ffy</Authors>
     <Description>A modern, middleware-based framework for building Telegram bots in .NET.</Description>
     <PackageDescription>A modern, middleware-based framework for building Telegram bots in .NET.</PackageDescription>
