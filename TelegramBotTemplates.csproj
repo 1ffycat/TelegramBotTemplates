@@ -6,8 +6,8 @@
     <PackageId>1ffycat.TelegramBotTemplates</PackageId>
     <Title>Clean Telegram bot templates</Title>
     <Authors>Iffy</Authors>
-    <Description>Neat templates for Telegram bot projects with beautiful architecture.</Description>
-    <PackageDescription>Neat templates for Telegram bot projects with beautiful architecture.</PackageDescription>
+    <Description>A set of neat templates for Telegram bot projects with flexible architecture.</Description>
+    <PackageDescription>A set of neat templates for Telegram bot projects with flexible architecture.</PackageDescription>
     <PackageTags>dotnet-new;templates;Telegram;Bot</PackageTags>
     <RepositoryUrl>https://github.com/1ffycat/TelegramBotTemplates</RepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
