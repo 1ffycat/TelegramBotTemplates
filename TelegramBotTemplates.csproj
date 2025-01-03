@@ -3,11 +3,13 @@
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageVersion>1.0</PackageVersion>
-    <PackageId>Iffy.TelegramBotTemplates</PackageId>
+    <PackageId>1ffycat.TelegramBotTemplates</PackageId>
     <Title>Clean Telegram bot templates</Title>
     <Authors>Iffy</Authors>
     <Description>Neat templates for Telegram bot projects with beautiful architecture.</Description>
+    <PackageDescription>Neat templates for Telegram bot projects with beautiful architecture.</PackageDescription>
     <PackageTags>dotnet-new;templates;Telegram;Bot</PackageTags>
+    <RepositoryUrl>https://github.com/1ffycat/TelegramBotTemplates</RepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
 
     <IncludeContentInPack>true</IncludeContentInPack>
