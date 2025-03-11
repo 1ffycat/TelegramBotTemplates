@@ -1,13 +1,13 @@
 ﻿using System.Reflection;
-using TelegramBotTemplate.Commands;
-using TelegramBotTemplate.Configuration;
-using TelegramBotTemplate.Services;
-using TelegramBotTemplate.Utility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using TelegramBotTemplate.Commands;
+using TelegramBotTemplate.Configuration;
+using TelegramBotTemplate.Services;
+using TelegramBotTemplate.Utility;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -44,7 +44,8 @@ app.UseTextCommands(); // Handle text commands
 // Anonymous middleware example
 app.Use(async (context, next) =>
 {
-    // Only proceed with sticker messages
+    // Skip all non-sticker messages
+    // and pass the control to the next middleware
     if (context.Update.Message?.Sticker is not { } sticker)
     {
         await next(context);
@@ -54,7 +55,7 @@ app.Use(async (context, next) =>
     // Echo the sticker
     await context.Client.SendSticker(context.Update.Message.Chat.Id, InputFile.FromFileId(sticker.FileId));
 
-    // Continue the execution
+    // Pass control to the next middleware in the pipeline
     await next(context);
 });
 

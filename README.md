@@ -1,148 +1,223 @@
 # 1ffycat.TelegramBotTemplates
 
-A modern, middleware-based framework for building Telegram bots in .NET, offering a familiar development experience similar to ASP.NET.
+Welcome to **1ffycat.TelegramBotTemplates**, a modern, middleware-based framework for building Telegram bots in .NET. Designed to feel instantly familiar to ASP.NET developers, this framework brings a powerful, flexible, and intuitive development experience to Telegram bot creation.
+
+## Why Use This Framework?
+
+Building Telegram bots can be complex, but **1ffycat.TelegramBotTemplates** simplifies the process without sacrificing power. Whether you're a seasoned .NET developer or just getting started, this framework offers:
+
+- A **streamlined development experience** inspired by ASP.NET's middleware pipeline.
+- **Batteries-included functionality** with built-in middleware, dependency injection, and localization support.
+- **Extensibility** to adapt to your unique use cases, from simple bots to enterprise-grade solutions.
+- A **robust foundation** built on top of the trusted `Telegram.Bot` package and .NET's application host model.
+
+With this framework, you can focus on building features, not boilerplate.
 
 ## Features
 
-- 🚀 ASP.NET-like middleware pipeline for processing updates
-- 💉 Built-in Dependency Injection support
-- 🌐 Resource management for internationalization
-- ⚙️ Configuration management using IConfiguration
-- 🎯 Automatic command parsing and context creation
-- 🛡️ Built-in middleware for:
+- 🚀 **ASP.NET-like Middleware Pipeline**: Process updates with a clean, modular pipeline.
+- 💉 **Dependency Injection**: Seamlessly integrate services using .NET's built-in DI system.
+- 🌐 **Internationalization (i18n)**: Manage resources for multi-language support out of the box.
+- ⚙️ **Configuration Management**: Leverage `IConfiguration` for flexible, ASP.NET-style configuration.
+- 🎯 **Automatic Command Parsing**: Parse commands and create context effortlessly.
+- 🛡️ **Built-in Middleware** for common needs, including:
   - ⚠️ Exception handling
   - ⏱️ Performance monitoring
   - 📖 Update logging
   - ✂️ Command matching and execution
-- 🔐 Integrated user-secrets management
-- ⚡ Many extensions for common use cases (text formatting, asking for DM permissions)
-- 🏗️ Based on .NET's application host model
-- 📦 Built on top of the Telegram.Bot package
+- 🔐 **User Secrets Management**: Securely handle sensitive data like bot tokens.
+- ⚡ **Extensible Utilities**: Includes extensions for text formatting, requesting DM permissions, and more.
+- 🏗️ **Modern Architecture**: Built on .NET's application host model for reliability and scalability.
+- 📦 **Trusted Foundation**: Powered by the `Telegram.Bot` package.
 
 ## Installation
+
+Get started by installing the template package:
+
 ```bash
 dotnet new install 1ffycat.TelegramBotTemplates
 ```
 
 ## Quick Start
+
+Create a new Telegram bot project in seconds:
+
 ```bash
 dotnet new telegram-bot --name MyTelegramBot --token "<YOUR TOKEN>"
 ```
 
-And you're good to go! `dotnet run` and your bot is up and running.
+... or set the bot token later:
+```bash
+dotnet new telegram-bot --name MyTelegramBot
 
-## How to:
-(Might need a dedicated wiki later...)
-### Add a text command
-You may use [StartCommand.cs](templates/TelegramBot/Commands/StartCommand.cs) as a reference.
+cd MyTelegramBot
 
-1. Create a command class that implements `IChatCommand`:
-    ```csharp
-    public class TestCommand : IChatCommand 
-    {
-        public bool CanExecute(CommandContext context) => context.Command?.Equals("/help", StringComparison.OrdinalIgnoreCase) ?? false;
+dotnet user-secrets set Telegram:BotToken "<TOKEN>"
+```
 
-        public async Task ExecuteAsync(ITelegramBotClient botClient, CommandContext context,
-        CancellationToken cancellationToken)
-        {
-            await botClient.SendMessage(context.Message.Chat.Id, "Hiiii!!", cancellationToken: cancellationToken);
-        }
-    }
-    ```
-2. Add a BotCommand attribute to the class and specify the command's name, description and optionally a usage example:
-    ```csharp
-    [BotCommand("/test", "Description for the /test command", "/test <arg>")]`).
-    ```
-3. Register the command in [Program.cs](templates/TelegramBot/Program.cs):
-    ```csharp
-    builder.Services.AddCommand<TestCommand>();
-    ```
+Run your bot with a single command:
 
-4. 🤗 Good job, pat yourself on the head!
+```bash
+dotnet run
+```
 
-### Add a middleware
-This template has two types of middleware (just like in ASP.NET): typed and anonymous.
+And just like that, your bot is live and ready to chat!
 
-Please keep in mind that the middleware is executed in the order you registered it in the pipeline.
+## How To
 
-#### Anonymous middleware
-Generally more suitable for something simple. [Program.cs](templates/TelegramBot/Program.cs) already has an example on how to use anonymous middleware, check it out.
+> ℹ️ **Note**: As this project grows, these guides may move to a dedicated wiki for even more detailed documentation.
 
-1. Register your middleware in [Program.cs](templates/TelegramBot/Program.cs):
-    ```csharp
-    app.Use(async (context, next) => 
-    {
-        // Here you can write exactly the same code as in a typed middleware!
+### Add a Text Command
 
-        // Send a message to the chat
-        await context.Client.SendMessage(context.Message.Chat.Id, "Update received, processing...", cancellationToken: cancellationToken);
+Commands are the heart of any Telegram bot. Here's how to create one using this framework. For inspiration, check out the [StartCommand.cs](templates/TelegramBot/Commands/StartCommand.cs) example.
 
-        // Continue the execution. You can skip this if you want to skip the update.
-        await next(context);
+1. **Create a Command Class**  
+   Implement the `IChatCommand` interface to define your command's behavior:
 
-        // You can even do things after the next middleware is done (which means all middleware further down the pipeline is also done)
-        await context.Client.SendMessage(context.Message.Chat.Id, "Done processing the update!", cancellationToken: cancellationToken);
-    });
-    ```
-2. 🤗 That's it! 
+   ```csharp
+   public class TestCommand : IChatCommand 
+   {
+       public bool CanExecute(CommandContext context) => 
+           context.Command?.Equals("/help", StringComparison.OrdinalIgnoreCase) ?? false;
 
-#### Typed middleware
-Works better for more complex scenarios. You can use the [RequestTimerMiddleware](templates/TelegramBot/Middleware/RequestTimerMiddleware.cs) as an example.
+       public async Task ExecuteAsync(ITelegramBotClient botClient, CommandContext context, 
+           CancellationToken cancellationToken)
+       {
+           await botClient.SendMessageAsync(context.Message.Chat.Id, "Hiiii!!", 
+               cancellationToken: cancellationToken);
+       }
+   }
+   ```
 
-1. Create a middleware class that implements IBotMiddleware:
-    ```csharp
-    public class TestMiddleware : IBotMiddleware
-    {
-        public async Task InvokeAsync(UpdateContext context, BotMiddlewareDelegate next)
-        {
-            // Here you can write exactly the same code as in an anonymous middleware!
+2. **Decorate with BotCommand Attribute**  
+   Add metadata to your command, including its name, description, and an optional usage example:
 
-            // Send a message to the chat
-            await context.Client.SendMessage(context.Message.Chat.Id, "Update received, processing...", cancellationToken: cancellationToken);
+   ```csharp
+   [BotCommand("/test", "Description for the /test command", "/test <arg>")]
+   ```
 
-            // Continue the execution. You can skip this if you want to skip the update.
-            await next(context);
+3. **Register the Command**  
+   Add your command to the service collection in [Program.cs](templates/TelegramBot/Program.cs):
 
-            // You can even do things after the next middleware is done (which means all middleware further down the pipeline is also done)
-            await context.Client.SendMessage(context.Message.Chat.Id, "Done processing the update!", cancellationToken: cancellationToken);
-        }
-    }
-    ```
-2. Register your middleware in [Program.cs](templates/TelegramBot/Program.cs):
-    ```csharp
-    app.Use<TestMiddleware>();
-    ```
-3. 🤗 That's it! 
+   ```csharp
+   builder.Services.AddCommand<TestCommand>();
+   ```
 
-### Add localization
-This templates offers a built-in support for RESX localization. Please refer to the [official Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/core/extensions/create-resource-files#resources-in-resx-files).
+4. **Celebrate Your Success**  
+   🤗 Great job! Give yourself a pat on the head—you've just added a new command!
 
-After adding new strings and locales, you can easily access the strings from your code:
+### Add Middleware
+
+Middleware lets you intercept and process updates in a modular way, much like ASP.NET. This framework supports two types of middleware: **anonymous** (for simple tasks) and **typed** (for complex scenarios). Remember, middleware executes in the order it's registered, so plan your pipeline carefully.
+
+#### Anonymous Middleware
+
+Perfect for quick, lightweight tasks. Check out the example in [Program.cs](templates/TelegramBot/Program.cs) for reference.
+
+1. **Register Your Middleware**  
+   Add your middleware to the pipeline in [Program.cs](templates/TelegramBot/Program.cs):
+
+   ```csharp
+   app.Use(async (context, next) => 
+   {
+       // Pre-processing: Log or modify the update before passing it along
+       await context.Client.SendMessageAsync(context.Message.Chat.Id, 
+           "Update received, processing...", cancellationToken: context.CancellationToken);
+
+       // Pass control to the next middleware in the pipeline
+       await next(context);
+
+       // Post-processing: Perform actions after the pipeline completes
+       await context.Client.SendMessageAsync(context.Message.Chat.Id, 
+           "Done processing the update!", cancellationToken: context.CancellationToken);
+   });
+   ```
+
+2. **You're Done!**  
+   🤗 That's it—your middleware is ready to roll!
+
+#### Typed Middleware
+
+Ideal for more complex logic or reusable middleware. Use [RequestTimerMiddleware.cs](templates/TelegramBot/Middleware/RequestTimerMiddleware.cs) as a reference.
+
+1. **Create a Middleware Class**  
+   Implement the `IBotMiddleware` interface:
+
+   ```csharp
+   public class TestMiddleware : IBotMiddleware
+   {
+       public async Task InvokeAsync(UpdateContext context, BotMiddlewareDelegate next)
+       {
+           // Pre-processing: Log or modify the update
+           await context.Client.SendMessageAsync(
+                context.MessageChat.Id, 
+                "Update received, processing...",
+                cancellationToken: context.CancellationToken);
+
+           // Pass control to the next middleware
+           await next(context);
+
+           // Post-processing: Actions after the pipeline completes
+           await context.Client.SendMessageAsync(
+                context.Message.Chat.Id, 
+                "Done processing the update!",
+                cancellationToken: context.CancellationToken);
+       }
+   }
+   ```
+
+2. **Register Your Middleware**  
+   Add it to the pipeline in [Program.cs](templates/TelegramBot/Program.cs):
+
+   ```csharp
+   app.Use<TestMiddleware>();
+   ```
+
+3. **You're Done!**  
+   🤗 That's it—your typed middleware is now part of the pipeline!
+
+### Add Localization
+
+This framework makes it easy to support multiple languages using RESX-based localization. For detailed guidance, refer to the [official Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/core/extensions/create-resource-files#resources-in-resx-files).
+
+Once you've added your strings and locales, access them in your code like this:
+
 ```csharp
 using YourNamespace.Resources;
 
-//                    SECTION        NAME
+// Access command-specific strings
 Console.WriteLine(CommandStrings.Start_Welcome);
-//                   SECTION               NAME
+
+// Access system-wide strings
 Console.WriteLine(SystemStrings.ErrorHandling_UnexpectedError);
 ```
 
-### Add configuration optinos
-This template uses the same configuration framework as ASP.NET does.
+### Add Configuration Options
 
-You can bind sections to models or use string identifiers.
+This framework uses the same powerful configuration system as ASP.NET, supporting multiple sources like `appsettings.json`, environment variables, `.ini` files, command-line arguments, and user secrets.
 
-All configuration sources (appsettings.json, env, .ini, args, user secrets, etc.) are supported.
+You can bind configuration sections to models or access values directly using string identifiers. For example:
+
+```csharp
+// Bind a configuration section to a model
+var myOptions = builder.Configuration.GetSection("MyOptions").Get<MyOptionsModel>();
+
+// Access a value directly
+var myValue = builder.Configuration["MySection:MyKey"];
+```
 
 ## Contributing
-It's a solo pet project, so all contributions are welcome! Please feel free to submit a Pull Request and I'll do my best to review it ASAP.
+
+This is a solo passion project, but I warmly welcome contributions from the community! Whether it's a bug fix, a new feature, or just a suggestion, feel free to submit a Pull Request. I'll review it as quickly as possible and work with you to get it merged.
 
 ## License
-This project is licensed under the **Mozilla Public License 2.0** - see the [LICENSE](LICENSE) file for details.
 
-#### 🤔 TL;DR
-- ✅ You can use it in your projects (including commercial ones)
-- ✅ You can modify the code
-- ✅ You can distribute your modified version
-- ⚠️ If you modify project's files, you must share these modifications under the same license
-- ❌ You can't just rebrand and sell the project as-is
+This project is licensed under the **Mozilla Public License 2.0**. See the [LICENSE](LICENSE) file for full details.
+
+#### 🤔 TL;DR – What This Means for You
+
+- ✅ **Use Freely**: You can use this framework in your projects, including commercial ones.
+- ✅ **Modify**: Feel free to tweak the code to suit your needs.
+- ✅ **Distribute**: Share your modified versions with others.
+- ⚠️ **Share Modifications**: If you modify the project's files, you must distribute those changes under the same license.
+- ❌ **No Rebranding**: You can't simply rebrand and sell this project as-is.
