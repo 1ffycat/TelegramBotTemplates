@@ -5,8 +5,8 @@
         "Telegram",
         "Bot"
     ],
-    "name": "Telegram bot",
-    "description": "Create a Telegram bot project that uses a custom middleware pipeline (similar to what ASP.NET has), a resource manager, application host and DI.",
+    "name": "Telegram Bot",
+    "description": "A modern, middleware-based Telegram Bot project template with support for DI, resources, configuration, etc. out of the box.",
     "identity": "Iffycat.TelegramBotTemplate",
     "shortName": "telegram-bot",
     "tags": {
