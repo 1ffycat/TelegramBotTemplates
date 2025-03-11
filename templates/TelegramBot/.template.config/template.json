@@ -7,7 +7,7 @@
     ],
     "name": "Telegram Bot",
     "description": "A modern, middleware-based Telegram Bot project template with support for DI, resources, configuration, etc. out of the box.",
-    "identity": "Iffycat.TelegramBotTemplate",
+    "identity": "1ffycat.TelegramBotTemplates",
     "shortName": "telegram-bot",
     "tags": {
         "language": "C#",
